@@ -1,6 +1,14 @@
 @ControleFinanceiro_HostAddress = http://localhost:5096
 
-GET {{ControleFinanceiro_HostAddress}}/weatherforecast/
+GET {{ControleFinanceiro_HostAddress}}/api/Categoria/2
 Accept: application/json
 
 ###
+
+POST {{ControleFinanceiro_HostAddress}}/api/Categoria
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nome": "Teste"
+}
