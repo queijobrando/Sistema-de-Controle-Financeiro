@@ -15,7 +15,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "nome": "Teste"
+  "nome": "Salário"
 }
 
 ###
@@ -30,7 +30,7 @@ Accept: application/json
 
 ###
 
-DELETE {{ControleFinanceiro_HostAddress}}/api/Categoria/2
+DELETE {{ControleFinanceiro_HostAddress}}/api/Categoria/3
 Accept: application/json
 
 ###
@@ -42,9 +42,9 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "valor": 10.0,
+  "valor": 500.0,
   "tipo": "Receita",
-  "categoriaId": 1,
+  "categoriaId": 6,
   "data": "2026-06-22"
 }
 
@@ -60,7 +60,7 @@ Accept: application/json
 
 ###
 
-DELETE {{ControleFinanceiro_HostAddress}}/api/Movimentacao/4
+DELETE {{ControleFinanceiro_HostAddress}}/api/Movimentacao/6
 Accept: application/json
 
 ###
@@ -73,4 +73,9 @@ Accept: application/json
 ###
 
 GET {{ControleFinanceiro_HostAddress}}/api/Relatorio/resumo
+Accept: application/json
+
+###
+
+GET {{ControleFinanceiro_HostAddress}}/api/Relatorio/total-categoria
 Accept: application/json

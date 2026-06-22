@@ -23,4 +23,12 @@ public class RelatorioController(RelatorioService relatorioService) : Controller
 
         return Ok(resumo);
     }
+
+    [HttpGet("total-categoria")]
+    public async Task<ActionResult<List<TotalPorCategoriaResponse>>> TotalPorCategoria()
+    {
+        var total = await relatorioService.TotalPorCategoria();
+
+        return Ok(total);
+    }
 }

@@ -5,7 +5,7 @@ namespace ControleFinanceiro.Services;
 
 public class RelatorioService(IMovimentacaoRepository movimentacaoRepository)
 {
-    
+
     public async Task<SaldoResponse> RetornarSaldo()
     {
         var saldo = await movimentacaoRepository.RetornarSaldo();
@@ -20,6 +20,11 @@ public class RelatorioService(IMovimentacaoRepository movimentacaoRepository)
         var totalReceitas = await movimentacaoRepository.SumValoresByTipo(Enums.Tipo.Receita);
 
         return new ResumoResponse(totalReceitas, totalDespesas, saldo);
+    }
+
+    public async Task<List<TotalPorCategoriaResponse>> TotalPorCategoria()
+    {
+        return await movimentacaoRepository.TotalPorCategoria();
     }
 
 }
