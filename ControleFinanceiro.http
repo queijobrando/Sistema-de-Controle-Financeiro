@@ -43,8 +43,8 @@ Accept: application/json
 
 {
   "valor": 500.0,
-  "tipo": "Receita",
-  "categoriaId": 6,
+  "tipo": "Despesa",
+  "categoriaId": 10,
   "data": "2026-06-22"
 }
 

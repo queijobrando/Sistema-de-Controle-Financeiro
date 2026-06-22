@@ -1,4 +1,5 @@
 using ControleFinanceiro.Data;
+using ControleFinanceiro.Exceptions;
 using ControleFinanceiro.Repositories;
 using ControleFinanceiro.Repositories.Impl;
 using ControleFinanceiro.Services;
@@ -20,6 +21,8 @@ builder.Services.AddScoped<CategoriaService>();
 builder.Services.AddScoped<IMovimentacaoRepository, MovimentacaoRepository>();
 builder.Services.AddScoped<MovimentacaoService>();
 builder.Services.AddScoped<RelatorioService>();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -41,5 +44,7 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 app.MapControllers();
+
+app.UseExceptionHandler();
 
 app.Run();
