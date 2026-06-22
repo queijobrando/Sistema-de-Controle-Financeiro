@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using ControleFinanceiro.Enums;
 
-namespace ControleFinanceiro.Dtos.Despesa;
+namespace ControleFinanceiro.Dtos.Movimentacao;
 
 public record MovimentacaoRequest(
     [Required(ErrorMessage = "Informe o valor")]

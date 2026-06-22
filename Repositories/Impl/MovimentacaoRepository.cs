@@ -1,4 +1,5 @@
 ﻿using ControleFinanceiro.Data;
+using ControleFinanceiro.Enums;
 using ControleFinanceiro.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,5 +34,25 @@ public class MovimentacaoRepository(ApplicationDbContext context) : IMovimentaca
     public void DeleteAsync(Movimentacao movimentacao)
     {
         context.Movimentacoes.Remove(movimentacao);
+    }
+
+    public async Task<decimal> RetornarSaldo()
+{
+    var saldo = await context.Movimentacoes
+        .GroupBy(_ => 1)
+        .Select(g => 
+            g.Where(m => m.Tipo == Tipo.Receita).Sum(m => m.Valor) -
+            g.Where(m => m.Tipo == Tipo.Despesa).Sum(m => m.Valor)
+        )
+        .FirstOrDefaultAsync();
+
+    return saldo;
+}
+
+    public async Task<decimal> SumValoresByTipo(Tipo tipo)
+    {
+        return await context.Movimentacoes
+            .Where(m=> m.Tipo == tipo)
+            .SumAsync(m=> m.Valor);
     }
 }

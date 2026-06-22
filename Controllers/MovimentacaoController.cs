@@ -1,4 +1,4 @@
-﻿using ControleFinanceiro.Dtos.Despesa;
+﻿using ControleFinanceiro.Dtos.Movimentacao;
 using ControleFinanceiro.Services;
 using Microsoft.AspNetCore.Mvc;
 

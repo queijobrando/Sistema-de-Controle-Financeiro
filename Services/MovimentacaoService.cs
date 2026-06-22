@@ -1,4 +1,4 @@
-﻿using ControleFinanceiro.Dtos.Despesa;
+﻿using ControleFinanceiro.Dtos.Movimentacao;
 using ControleFinanceiro.Models;
 using ControleFinanceiro.Repositories;
 

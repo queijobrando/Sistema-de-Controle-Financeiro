@@ -1,6 +1,6 @@
 ﻿using ControleFinanceiro.Enums;
 
-namespace ControleFinanceiro.Dtos.Despesa;
+namespace ControleFinanceiro.Dtos.Movimentacao;
 
 public record MovimentacaoResponse(
     int Id,
