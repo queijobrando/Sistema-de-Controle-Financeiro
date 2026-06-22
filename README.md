@@ -115,7 +115,7 @@ Sem corpo.
 ```json
 {
   "valor": 12.0,
-  "tipo": "D",
+  "tipo": "Despesa",
   "categoriaId": 1,
   "data": "2026-06-19"
 }
@@ -127,17 +127,9 @@ Sem corpo.
 {
   "id": 1,
   "valor": 12.0,
-  "tipo": "D",
+  "tipo": "Despesa",
   "categoriaId": 1,
   "data": "2026-06-19"
-}
-```
-
-#### Response (400 Bad Request)
-
-```json
-{
-  "mensagem": "Tipo informado não existe"
 }
 ```
 
@@ -158,7 +150,7 @@ Sem corpo.
   {
     "id": 1,
     "valor": 12.0,
-    "tipo": "D",
+    "tipo": "Despesa",
     "categoriaId": 1,
     "data": "2026-06-19"
   },
@@ -179,7 +171,7 @@ Sem corpo.
   {
     "id": 1,
     "valor": 12.0,
-    "tipo": "D",
+    "tipo": "Despesa",
     "categoriaId": 1,
     "data": "2026-06-19"
   }
@@ -193,7 +185,7 @@ Sem corpo.
   {
     "id": 1,
     "valor": 12.0,
-    "tipo": "D",
+    "tipo": "Despesa",
     "categoriaId": 1,
     "data": "2026-06-19"
   }
@@ -207,7 +199,7 @@ Sem corpo.
   {
     "id": 1,
     "valor": 12.0,
-    "tipo": "D",
+    "tipo": "Despesa",
     "categoriaId": 1,
     "data": "2026-06-19"
   }
@@ -222,7 +214,7 @@ Sem corpo.
 {
   "id": 1,
   "valor": 12.0,
-  "tipo": "D",
+  "tipo": "Despesa",
   "categoriaId": 1,
   "data": "2026-06-19"
 }

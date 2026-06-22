@@ -38,6 +38,11 @@ public class CategoriaService(ICategoriaRepository categoriaRepository)
         return null;
     }
 
+    public async Task<Categoria?> RetornarPorId(int id)
+    {
+        return await categoriaRepository.FindByIdAsync(id);
+    }
+
     public async Task<List<CategoriaResponse>> ListarCategorias()
     {
         var lista = await categoriaRepository.ListAsync();

@@ -32,3 +32,33 @@ Accept: application/json
 
 DELETE {{ControleFinanceiro_HostAddress}}/api/Categoria/2
 Accept: application/json
+
+###
+
+###  MOVIMENTACOES
+
+POST {{ControleFinanceiro_HostAddress}}/api/Movimentacao
+Content-Type: application/json
+Accept: application/json
+
+{
+  "valor": 12.0,
+  "tipo": "Despesa",
+  "categoriaId": 3,
+  "data": "2026-06-22"
+}
+
+###
+
+GET {{ControleFinanceiro_HostAddress}}/api/Movimentacao/2
+Accept: application/json
+
+###
+
+GET {{ControleFinanceiro_HostAddress}}/api/Movimentacao
+Accept: application/json
+
+###
+
+DELETE {{ControleFinanceiro_HostAddress}}/api/Movimentacao/1
+Accept: application/json
