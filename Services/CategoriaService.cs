@@ -37,4 +37,39 @@ public class CategoriaService(ICategoriaRepository categoriaRepository)
 
         return null;
     }
+
+    public async Task<List<CategoriaResponse>> ListarCategorias()
+    {
+        var lista = await categoriaRepository.ListAsync();
+
+        return lista.ConvertAll(c => new CategoriaResponse(c.Id, c.Nome));
+    }
+
+    public async Task<CategoriaResponse?> EditarCategoria(int id, CategoriaEdit dto)
+    {
+        var categoria = await categoriaRepository.FindByIdAsync(id);
+
+        if (categoria != null)
+        {
+            categoria.Nome = dto.Nome;
+            await categoriaRepository.SaveChangesAsync();
+            return new CategoriaResponse(categoria.Id, categoria.Nome);
+        }
+
+        return null;
+    }
+
+    public async Task<bool> DeletarPorId(int id)
+    {
+        var categoria = await categoriaRepository.FindByIdAsync(id);
+
+        if (categoria != null)
+        {
+            categoriaRepository.DeleteAsync(categoria);
+            await categoriaRepository.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
+    }
 }

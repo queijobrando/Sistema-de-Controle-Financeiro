@@ -32,4 +32,43 @@ public class CategoriaController(CategoriaService categoriaService) : Controller
 
         return Ok(categoria);
     }
+
+    [HttpGet]
+    public async Task<ActionResult<List<CategoriaResponse>>> ListarCategorias()
+    {
+        var lista = await categoriaService.ListarCategorias();
+
+        if (lista.Count == 0)
+        {
+            return NoContent();
+        }
+
+        return Ok(lista);
+    }
+
+    [HttpPatch("{id:int}")]
+    public async Task<ActionResult<CategoriaResponse>> EditarCategoria([FromRoute] int id, [FromBody] CategoriaEdit dto)
+    {
+        var categoria = await categoriaService.EditarCategoria(id, dto);
+
+        if (categoria != null)
+        {
+            return Ok(categoria);
+        }
+
+        return NotFound();
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeletarPorId([FromRoute] int id)
+    {
+        var resposta = await categoriaService.DeletarPorId(id);
+
+        if (resposta)
+        {
+            return NoContent();
+        }
+
+        return NotFound();
+    }
 }

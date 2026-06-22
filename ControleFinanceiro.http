@@ -1,6 +1,11 @@
 @ControleFinanceiro_HostAddress = http://localhost:5096
 
-GET {{ControleFinanceiro_HostAddress}}/api/Categoria/2
+GET {{ControleFinanceiro_HostAddress}}/api/Categoria/3
+Accept: application/json
+
+###
+
+GET {{ControleFinanceiro_HostAddress}}/api/Categoria
 Accept: application/json
 
 ###
@@ -12,3 +17,18 @@ Accept: application/json
 {
   "nome": "Teste"
 }
+
+###
+
+PATCH {{ControleFinanceiro_HostAddress}}/api/Categoria/3
+Content-Type: application/json
+Accept: application/json
+
+{
+  "nome": "Testerr"
+}
+
+###
+
+DELETE {{ControleFinanceiro_HostAddress}}/api/Categoria/2
+Accept: application/json
