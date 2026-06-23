@@ -8,18 +8,19 @@ namespace ControleFinanceiro.Repositories.Impl;
 
 public class MovimentacaoRepository(ApplicationDbContext context) : IMovimentacaoRepository
 {
-    public async Task<List<Movimentacao>> ListAsync()
+    public async Task<List<Movimentacao>> ListAsync(Usuario usuario)
     {
         return await context.Movimentacoes
+            .Where(m=> m.Usuario == usuario)
             .Include(m => m.Categoria)
             .ToListAsync();
     }
 
-    public async Task<Movimentacao?> FindByIdAsync(int id)
+    public async Task<Movimentacao?> FindByIdAsync(int id, Usuario usuario)
     {
         return await context.Movimentacoes
             .Include(m => m.Categoria)
-            .FirstOrDefaultAsync(m => m.Id == id);
+            .FirstOrDefaultAsync(m => m.Id == id && m.Usuario == usuario);
     }
 
     public async Task SaveChangesAsync()
@@ -37,27 +38,28 @@ public class MovimentacaoRepository(ApplicationDbContext context) : IMovimentaca
         context.Movimentacoes.Remove(movimentacao);
     }
 
-    public async Task<decimal> RetornarSaldo()
+    public async Task<decimal> RetornarSaldo(Usuario usuario)
     {
         return await context.Movimentacoes
             .GroupBy(_ => 1)
             .Select(g =>
-                g.Where(m => m.Tipo == Tipo.Receita).Sum(m => m.Valor) -
-                g.Where(m => m.Tipo == Tipo.Despesa).Sum(m => m.Valor)
+                g.Where(m => m.Tipo == Tipo.Receita && m.Usuario == usuario).Sum(m => m.Valor) -
+                g.Where(m => m.Tipo == Tipo.Despesa && m.Usuario == usuario).Sum(m => m.Valor)
             )
             .FirstOrDefaultAsync();
     }
 
-    public async Task<decimal> SumValoresByTipo(Tipo tipo)
+    public async Task<decimal> SumValoresByTipo(Tipo tipo, Usuario usuario)
     {
         return await context.Movimentacoes
-            .Where(m => m.Tipo == tipo)
+            .Where(m => m.Tipo == tipo && m.Usuario == usuario)
             .SumAsync(m => m.Valor);
     }
 
-    public async Task<List<TotalPorCategoriaResponse>> TotalPorCategoria()
+    public async Task<List<TotalPorCategoriaResponse>> TotalPorCategoria(Usuario usuario)
     {
         return await context.Movimentacoes
+            .Where(m=> m.Usuario == usuario)
             .Include(m => m.Categoria)
             .GroupBy(m => m.Categoria.Nome)
             .Select(g => new TotalPorCategoriaResponse(

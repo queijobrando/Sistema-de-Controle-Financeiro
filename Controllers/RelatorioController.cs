@@ -1,5 +1,6 @@
 using ControleFinanceiro.Dtos.Relatorio;
 using ControleFinanceiro.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControleFinanceiro.Controllers;
@@ -8,6 +9,7 @@ namespace ControleFinanceiro.Controllers;
 [Route("api/[controller]")]
 public class RelatorioController(RelatorioService relatorioService) : ControllerBase
 {
+    [Authorize]
     [HttpGet("saldo")]
     public async Task<ActionResult<SaldoResponse>> RetornarSaldo()
     {
@@ -16,6 +18,7 @@ public class RelatorioController(RelatorioService relatorioService) : Controller
         return Ok(saldo);
     }
 
+    [Authorize]
     [HttpGet("resumo")]
     public async Task<ActionResult<SaldoResponse>> RetornaResumo()
     {
@@ -24,6 +27,7 @@ public class RelatorioController(RelatorioService relatorioService) : Controller
         return Ok(resumo);
     }
 
+    [Authorize]
     [HttpGet("total-categoria")]
     public async Task<ActionResult<List<TotalPorCategoriaResponse>>> TotalPorCategoria()
     {

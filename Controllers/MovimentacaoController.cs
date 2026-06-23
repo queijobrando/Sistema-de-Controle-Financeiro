@@ -1,5 +1,6 @@
 ﻿using ControleFinanceiro.Dtos.Movimentacao;
 using ControleFinanceiro.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControleFinanceiro.Controllers;
@@ -8,6 +9,7 @@ namespace ControleFinanceiro.Controllers;
 [Route("api/[controller]")]
 public class MovimentacaoController(MovimentacaoService movimentacaoService) : ControllerBase
 {
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<MovimentacaoResponse>> NovaMovimentacao([FromBody] MovimentacaoRequest dto)
     {
@@ -20,6 +22,7 @@ public class MovimentacaoController(MovimentacaoService movimentacaoService) : C
         );
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<List<MovimentacaoResponse>>> ListarCategorias()
     {
@@ -33,6 +36,7 @@ public class MovimentacaoController(MovimentacaoService movimentacaoService) : C
         return Ok(lista);
     }
 
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<ActionResult<MovimentacaoResponse>> BuscarPorId([FromRoute] int id)
     {
@@ -46,6 +50,7 @@ public class MovimentacaoController(MovimentacaoService movimentacaoService) : C
         return Ok(movimentacao);
     }
 
+    [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeletarPorId([FromRoute] int id)
     {

@@ -6,14 +6,14 @@ namespace ControleFinanceiro.Repositories.Impl;
 
 public class CategoriaRepository(ApplicationDbContext context) : ICategoriaRepository
 {
-    public async Task<List<Categoria>> ListAsync()
+    public async Task<List<Categoria>> ListAsync(Usuario usuario)
     {
-        return await context.Categorias.ToListAsync();
+        return await context.Categorias.Where(c => c.Usuario == usuario).ToListAsync();
     }
 
-    public async Task<Categoria?> FindByIdAsync(int id)
+    public async Task<Categoria?> FindByIdAsync(int id, Usuario usuario)
     {
-        return await context.Categorias.FindAsync(id);
+        return await context.Categorias.FirstOrDefaultAsync(c => c.Id == id && c.Usuario == usuario);
     }
 
     public async Task SaveChangesAsync()
@@ -31,9 +31,9 @@ public class CategoriaRepository(ApplicationDbContext context) : ICategoriaRepos
         context.Categorias.Remove(categoria);
     }
 
-    public async Task<bool> ExistsByNome(string nome)
+    public async Task<bool> ExistsByNome(string nome, Usuario usuario)
     {
-        if (await context.Categorias.AnyAsync(c=> c.Nome == nome))
+        if (await context.Categorias.AnyAsync(c => c.Nome == nome && c.Usuario == usuario))
         {
             return true;
         }

@@ -10,4 +10,6 @@ public class ApplicationDbContext : DbContext
     public DbSet<Categoria> Categorias { get; set; }
 
     public DbSet<Movimentacao> Movimentacoes { get; set; }
+
+    public DbSet<Usuario> Usuarios { get; set; }
 }

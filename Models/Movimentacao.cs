@@ -19,4 +19,7 @@ public class Movimentacao
 
     [Required(ErrorMessage = "Informe a data")]
     public DateOnly Data { get; set; }
+
+    [Required]
+    public Usuario Usuario { get; set; } = null!;
 }

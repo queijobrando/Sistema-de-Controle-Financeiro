@@ -6,7 +6,8 @@ namespace ControleFinanceiro.Services;
 
 public class MovimentacaoService(
     IMovimentacaoRepository movimentacaoRepository,
-    CategoriaService categoriaService
+    CategoriaService categoriaService,
+    JwtService jwtService
 )
 {
     public async Task<MovimentacaoResponse> NovaMovimentacao(MovimentacaoRequest dto)
@@ -18,12 +19,15 @@ public class MovimentacaoService(
             throw new ArgumentException("Categoria inválida ou inexistente");
         }
 
+        var usuario = await jwtService.RetornarUsuarioJwt();
+
         var movimentacao = new Movimentacao()
         {
             Valor = dto.Valor,
             Tipo = dto.Tipo,
             Categoria = categoria,
-            Data = dto.Data
+            Data = dto.Data,
+            Usuario = usuario
         };
 
         await movimentacaoRepository.AddAsync(movimentacao);
@@ -40,7 +44,7 @@ public class MovimentacaoService(
 
     public async Task<List<MovimentacaoResponse>> ListarMovimentacoes()
     {
-        var lista = await movimentacaoRepository.ListAsync();
+        var lista = await movimentacaoRepository.ListAsync(await jwtService.RetornarUsuarioJwt());
 
         return lista.ConvertAll(m => new MovimentacaoResponse(
             m.Id,
@@ -53,7 +57,7 @@ public class MovimentacaoService(
 
     public async Task<MovimentacaoResponse?> BuscarPorId(int id)
     {
-        var movimentacao = await movimentacaoRepository.FindByIdAsync(id);
+        var movimentacao = await movimentacaoRepository.FindByIdAsync(id, await jwtService.RetornarUsuarioJwt());
 
         if (movimentacao != null)
         {
@@ -71,7 +75,7 @@ public class MovimentacaoService(
 
     public async Task<bool> DeletarPorId(int id)
     {
-        var movimentacao = await movimentacaoRepository.FindByIdAsync(id);
+        var movimentacao = await movimentacaoRepository.FindByIdAsync(id, await jwtService.RetornarUsuarioJwt());
 
         if (movimentacao != null)
         {

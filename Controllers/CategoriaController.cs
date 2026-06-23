@@ -1,5 +1,6 @@
 ﻿using ControleFinanceiro.Dtos.Categoria;
 using ControleFinanceiro.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ControleFinanceiro.Controllers;
@@ -8,6 +9,7 @@ namespace ControleFinanceiro.Controllers;
 [Route("api/[controller]")]
 public class CategoriaController(CategoriaService categoriaService) : ControllerBase
 {
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<CategoriaResponse>> CriarCategoria([FromBody] CategoriaRequest dto)
     {
@@ -20,6 +22,7 @@ public class CategoriaController(CategoriaService categoriaService) : Controller
         );
     }
 
+    [Authorize]
     [HttpGet("{id:int}")]
     public async Task<ActionResult<CategoriaResponse>> BuscarPorId([FromRoute] int id)
     {
@@ -33,6 +36,7 @@ public class CategoriaController(CategoriaService categoriaService) : Controller
         return Ok(categoria);
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<List<CategoriaResponse>>> ListarCategorias()
     {
@@ -46,6 +50,7 @@ public class CategoriaController(CategoriaService categoriaService) : Controller
         return Ok(lista);
     }
 
+    [Authorize]
     [HttpPatch("{id:int}")]
     public async Task<ActionResult<CategoriaResponse>> EditarCategoria([FromRoute] int id, [FromBody] CategoriaEdit dto)
     {
@@ -59,6 +64,7 @@ public class CategoriaController(CategoriaService categoriaService) : Controller
         return NotFound();
     }
 
+    [Authorize]
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeletarPorId([FromRoute] int id)
     {

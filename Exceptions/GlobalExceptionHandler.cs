@@ -14,6 +14,7 @@ public class GlobalExceptionHandler : IExceptionHandler
         {
             ArgumentException ex => (StatusCodes.Status400BadRequest, ex.Message),
             KeyNotFoundException ex => (StatusCodes.Status404NotFound, ex.Message),
+            UnauthorizedAccessException ex => (StatusCodes.Status401Unauthorized, ex.Message),
             _ => (StatusCodes.Status500InternalServerError, "Erro interno do servidor")
         };
 
