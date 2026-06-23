@@ -8,11 +8,128 @@ Um sistema simples de controle de movimentações bancárias para estudo da impl
 
 ![diagramaDb](db.png)
 
+---
+
+## Como Rodar
+
+### Desenvolvimento
+
+**Pré-requisitos:**
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- [Docker](https://www.docker.com/) (para o banco de dados)
+
+**1. Suba o banco de dados PostgreSQL:**
+
+```bash
+docker run -d \
+  --name controle-financeiro-db \
+  -e POSTGRES_DB=controleFinanceiroDb \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=postgres \
+  -p 5432:5432 \
+  postgres:16
+```
+
+**2. Gere a chave JWT com OpenSSL:**
+
+```bash
+openssl rand -base64 32
+```
+
+**3. Configure os User Secrets:**
+
+```bash
+dotnet user-secrets init
+dotnet user-secrets set "Jwt:Key" "sua-chave-gerada-no-passo-anterior"
+```
+
+**4. Rode a aplicação:**
+
+```bash
+dotnet run
+```
+
+A API estará disponível em `http://localhost:5096`.
+
+---
+
+### Produção (Docker Compose)
+
+**1. Gere a chave JWT com OpenSSL:**
+
+```bash
+openssl rand -base64 32
+```
+
+**2. Crie o arquivo `.env` na raiz do projeto:**
+
+```env
+JWT_KEY=sua-chave-gerada-no-passo-anterior
+POSTGRES_DB=controleFinanceiroDb
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=sua-senha-segura
+```
+
+**3. Suba os containers:**
+
+```bash
+docker compose up -d
+```
+
+A API estará disponível em `http://localhost:8080`.
+
+---
+
 ## Endpoints da API
 
-### POST /api/categoria
+> Todos os endpoints, exceto `/api/auth`, requerem autenticação via Bearer Token no header:
+> 
+> **Authorization: Bearer {token}**
+> 
 
-#### Request
+---
+
+### Auth
+
+#### POST /api/auth/registrar
+
+```json
+{
+  "email": "usuario@email.com",
+  "senha": "sua-senha"
+}
+```
+
+**Response (200 OK)**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+#### POST /api/auth/login
+
+```json
+{
+  "email": "usuario@email.com",
+  "senha": "sua-senha"
+}
+```
+
+**Response (200 OK)**
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+---
+
+### Categorias
+
+#### POST /api/categoria
 
 ```json
 {
@@ -20,7 +137,7 @@ Um sistema simples de controle de movimentações bancárias para estudo da impl
 }
 ```
 
-#### Response (201 Created)
+**Response (201 Created)**
 
 ```json
 {
@@ -29,9 +146,9 @@ Um sistema simples de controle de movimentações bancárias para estudo da impl
 }
 ```
 
-### GET /api/categoria
+#### GET /api/categoria
 
-#### Response (200 OK)
+**Response (200 OK)**
 
 ```json
 [
@@ -46,9 +163,9 @@ Um sistema simples de controle de movimentações bancárias para estudo da impl
 ]
 ```
 
-### GET /api/categoria/{id}
+#### GET /api/categoria/{id}
 
-#### Response (200 OK)
+**Response (200 OK)**
 
 ```json
 {
@@ -57,7 +174,7 @@ Um sistema simples de controle de movimentações bancárias para estudo da impl
 }
 ```
 
-#### Response (404 Not Found)
+**Response (404 Not Found)**
 
 ```json
 {
@@ -65,9 +182,7 @@ Um sistema simples de controle de movimentações bancárias para estudo da impl
 }
 ```
 
-### PATCH /api/categoria/{id}
-
-#### Request
+#### PATCH /api/categoria/{id}
 
 ```json
 {
@@ -75,7 +190,7 @@ Um sistema simples de controle de movimentações bancárias para estudo da impl
 }
 ```
 
-#### Response (200 OK)
+**Response (200 OK)**
 
 ```json
 {
@@ -84,7 +199,7 @@ Um sistema simples de controle de movimentações bancárias para estudo da impl
 }
 ```
 
-#### Response (404 Not Found)
+**Response (404 Not Found)**
 
 ```json
 {
@@ -92,13 +207,11 @@ Um sistema simples de controle de movimentações bancárias para estudo da impl
 }
 ```
 
-### DELETE /api/categoria/{id}
+#### DELETE /api/categoria/{id}
 
-#### Response (204 No Content)
+**Response (204 No Content)**
 
-Sem corpo.
-
-#### Response (404 Not Found)
+**Response (404 Not Found)**
 
 ```json
 {
@@ -106,11 +219,11 @@ Sem corpo.
 }
 ```
 
-# Movimentações
+---
 
-### POST /api/movimentacao
+### Movimentações
 
-#### Request
+#### POST /api/movimentacao
 
 ```json
 {
@@ -121,7 +234,7 @@ Sem corpo.
 }
 ```
 
-#### Response (201 Created)
+**Response (201 Created)**
 
 ```json
 {
@@ -133,7 +246,7 @@ Sem corpo.
 }
 ```
 
-#### Response (400 Bad Request)
+**Response (400 Bad Request)**
 
 ```json
 {
@@ -141,9 +254,9 @@ Sem corpo.
 }
 ```
 
-### GET /api/movimentacao
+#### GET /api/movimentacao
 
-#### Response (200 OK)
+**Response (200 OK)**
 
 ```json
 [
@@ -157,14 +270,14 @@ Sem corpo.
   {
     "id": 2,
     "valor": 1500.0,
-    "tipo": "R",
+    "tipo": "Receita",
     "categoriaId": 2,
     "data": "2026-06-20"
   }
 ]
 ```
 
-### GET /api/movimentacao?tipo=D
+#### GET /api/movimentacao?tipo=Despesa
 
 ```json
 [
@@ -178,7 +291,7 @@ Sem corpo.
 ]
 ```
 
-### GET /api/movimentacao?categoriaId=1
+#### GET /api/movimentacao?categoriaId=1
 
 ```json
 [
@@ -192,7 +305,7 @@ Sem corpo.
 ]
 ```
 
-### GET /api/movimentacao?data=2026-06-19
+#### GET /api/movimentacao?data=2026-06-19
 
 ```json
 [
@@ -206,9 +319,9 @@ Sem corpo.
 ]
 ```
 
-### GET /api/movimentacao/{id}
+#### GET /api/movimentacao/{id}
 
-#### Response (200 OK)
+**Response (200 OK)**
 
 ```json
 {
@@ -220,7 +333,7 @@ Sem corpo.
 }
 ```
 
-#### Response (404 Not Found)
+**Response (404 Not Found)**
 
 ```json
 {
@@ -228,13 +341,11 @@ Sem corpo.
 }
 ```
 
-### DELETE /api/movimentacao/{id}
+#### DELETE /api/movimentacao/{id}
 
-#### Response (204 No Content)
+**Response (204 No Content)**
 
-Sem corpo.
-
-#### Response (404 Not Found)
+**Response (404 Not Found)**
 
 ```json
 {
@@ -242,11 +353,13 @@ Sem corpo.
 }
 ```
 
-# Relatórios
+---
 
-### GET /api/saldo
+### Relatórios
 
-#### Response (200 OK)
+#### GET /api/relatorio/saldo
+
+**Response (200 OK)**
 
 ```json
 {
@@ -254,18 +367,15 @@ Sem corpo.
 }
 ```
 
-#### Regra
+**Regra:**
 
-```text
-saldo =
-soma(receitas)
--
-soma(despesas)
+```
+saldo = soma(receitas) - soma(despesas)
 ```
 
-### GET /api/resumo
+#### GET /api/relatorio/resumo
 
-#### Response (200 OK)
+**Response (200 OK)**
 
 ```json
 {
@@ -275,9 +385,9 @@ soma(despesas)
 }
 ```
 
-### GET /api/movimentacao/por-categoria
+#### GET /api/relatorio/total-categoria
 
-#### Response (200 OK)
+**Response (200 OK)**
 
 ```json
 [
